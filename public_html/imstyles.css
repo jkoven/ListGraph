@@ -1,0 +1,683 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 27, 2015, 8:21:18 AM
+    Author     : jkoven
+*/
+html body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    margin: 0px;
+    color: #000000;
+}
+html label{    
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+html input {
+    border-radius: 10px;
+    border: solid 1px #eeeeee;
+}
+html input[type=text],
+html input[type=number],
+html input[type=search],
+html textarea {
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    padding: 3px 8px 3px 8px;
+}
+html input[type=text]:focus,
+html input[type=number]:focus,
+html input[type=search]:focus,
+html textarea:focus {
+    box-shadow: 0 0 5px #51cbee;
+    padding: 3px 8px 3px 8px;
+    border: 1px solid #51cbee;
+}
+html button {
+    outline: none;
+    color: white;
+    background-color: #0bbaf4;
+    border: none;
+    border-radius: 10px;
+    padding: 2px 10px 3px 10px;
+    height: 20px;
+    cursor: pointer;
+}
+html button:focus {
+    box-shadow: 0 0 5px #51cbee;
+}
+html button.btn-second {
+    background-color: #fe7328;
+}
+html select {
+    outline: none;
+    color: #000000;
+    background-color: white;
+    border: solid 1px #eeeeee;
+    border-radius: 10px;
+    height: 20px;
+}
+html h1 {
+    font-size: 24px;
+}
+html h2 {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    border-bottom: solid 1px #eeeeee;
+}
+svg text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    fill: black
+}
+
+.user{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 9pt
+}
+
+rect.user{
+    stroke: #eeeeee;
+    stroke-width: 1;
+    stroke-opacity: 1
+
+}
+rect.user[select_state=none] {
+    fill: transparent
+}
+rect[select_state=selected][color=_0] {
+    /*    fill: #7fc97f*/
+    fill: green;
+}
+rect[select_state=selected][color=_1] {
+    /*    fill: #beaed4*/
+    fill: blue;
+}
+rect[select_state=selected][color=_2] {
+    /*    fill: #fdc086*/
+    fill: red;
+}
+rect.user[select_state=selected][color=_3] {
+    fill: #6a3d9a
+}
+rect.user[select_state=selected][color=_4] {
+    fill: #386cb0
+}
+rect.user[select_state=selected][color=_5] {
+    fill: #f0027f
+}
+rect.user[select_state=selected][color=_6] {
+    fill: #bf5b17
+}
+rect.user[select_state=selected][color=_7] {
+    fill: #666666
+}
+rect[select_state=preview][color=_0] {
+    /*    fill: #7fc97f*/
+    fill: green;
+}
+rect[select_state=preview][color=_1] {
+    /*    fill: #beaed4*/
+    fill: blue;
+}
+rect[select_state=preview][color=_2] {
+    /*    fill: #fdc086*/
+    fill: red;
+}
+rect.user[select_state=preview][color=_3] {
+    fill: #6a3d9a
+}
+rect.user[select_state=preview][color=_4] {
+    fill: #386cb0
+}
+rect.user[select_state=preview][color=_5] {
+    fill: #f0027f
+}
+rect.user[select_state=preview][color=_6] {
+    fill: #bf5b17
+}
+rect.user[select_state=preview][color=_7] {
+    fill: #666666
+}
+rect.user[select_state=not_selected] {
+    fill: transparent
+}
+rect.user[select_state=connected] {
+    fill:transparent
+}
+rect.user[select_state=preview_connected] {
+    fill: transparent
+}
+rect.subjectSelected{
+    fill: #eeeeee;
+    fill-opacity: 0.5;
+    stroke: none;
+}
+text[select_state=selected]{
+    font-weight: bold;
+    text-decoration: underline;
+    stroke-opacity: 1;
+}
+text[select_state=selected_h]{
+    font-weight: bold;
+    text-decoration: underline;
+    stroke-opacity: 1;
+}
+
+text[select_state=preview]{
+    font-weight: bold;
+    stroke-opacity: 1;
+}
+text[select_state=preview_h]{
+    font-weight: bold;
+    stroke-opacity: 1;
+}
+text[select_state=preview_connected]{
+    font-weight: bold;
+    stroke-opacity: 1;
+}
+text[select_state=connected]{
+    font-weight: bold;
+    stroke-opacity: 1;
+}
+text[select_state=none]{
+    font-weight: normal;
+    fill:black;
+    stroke-opacity: 1;
+}
+text[select_state=not_selected]{
+    font-weight: normal;
+    fill:grey;
+    fill-opacity: 1;
+}
+text[highlight=no]{
+    text-decoration: none;
+    font-weight: normal;
+}
+text[highlight=yes]{
+    text-decoration: underline;
+    font-weight: bold;
+}
+text[group='0']{
+    fill:red
+}
+text[group='1']{
+    fill:blue
+}
+
+.linkname {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt
+}
+
+.count {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt
+}
+
+.xaxis path {
+}
+
+.xaxis line {
+    stroke: grey;
+}
+
+.xaxis .minor line {
+    stroke: lightgrey;
+}
+.yaxis path {
+}
+
+.yaxis line {
+    stroke: grey;
+}
+
+.yaxis .minor line {
+    stroke: lightgrey;
+}
+.countaxis path {
+}
+
+.countaxis line {
+    stroke: grey;
+}
+
+.countaxis .minor line {
+    stroke: lightgrey;
+}
+
+.link {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt
+}
+
+.contact {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt
+}
+.guide {
+    fill: none;
+    stroke: black;
+    stroke-width:1;
+    stroke-opacity:0.5
+}
+text.linkcount {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+    alignment-baseline: middle;
+    fill: orangered
+}
+text.emailcount {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+    alignment-baseline: middle;
+    fill: orangered
+}
+.yaxis text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 8pt;
+}
+.xaxis text{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+}
+rect.previewtime{
+    fill: #0bbaf4;
+    stroke:black;
+    stroke-width:1;
+    fill-opacity:.5;
+}
+rect.selecttime{
+    fill: #0bbaf4;
+    stroke:black;
+    stroke-width:1;
+    fill-opacity:.5;
+}
+line.link[selected=no]{
+    stroke-opacity: 0.5
+}
+line.link[selected=yes]{
+    stroke-opacity: 1.0
+}
+line.link[select_state=none]{
+    stroke: none;
+    stroke-opacity: 0.1
+
+}
+line.link[select_state=not_selected]{
+    stroke: none;
+    stroke-opacity: 0.05
+}
+line.link[select_state=selected]{
+    stroke: #0bbaf4;
+}
+line.link[select_state=selected_h]{
+    stroke: #0bbaf4;
+    stroke-opacity: 1.0
+}
+line.link[select_state=connected]{
+    stroke: #fe7328;
+}
+line.link[select_state=connected_h]{
+    stroke: #fe7328;
+    stroke-opacity: 1.0
+}
+line.link[select_state=preview]{
+    stroke: #0bbaf4;
+}
+line.link[select_state=preview_h]{
+    stroke: #0bbaf4;
+    stroke-opacity: 1.0
+}
+line.previewlink{
+    stroke: #fe7328;
+    fill: #fe7328;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.previewaddlink{
+    stroke: #dddddd;
+    fill: #dddddd;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.selectlink{
+    stroke: #0bbaf4;
+    fill: #0bbaf4;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.emailbar{
+    stroke: black;
+    fill: black;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.linkbar{
+    stroke: #dddddd;
+    fill: #dddddd;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.refline{
+    stroke: #eeeeee;
+    fill: #eeeee;
+    stroke-width: 1;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+#topBar{
+    height: 35px;
+    top: 0px;
+}
+#legendBar{
+    height: 20px;
+    top: 45px;
+}
+.titleBar {
+    padding: 5px;
+    box-shadow: 1px 1px 1px #eeeeee;
+    overflow: auto;
+    white-space: nowrap;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    background-color: white;
+    z-index: 1005;
+}
+.titleBar h1 {
+    color: #0bbaf4;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 5px;
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 300;
+    vertical-align: middle;
+}
+.titleBar ul {
+    padding-left: 0px;
+    margin: 0px;
+    list-style: none;
+    display: inline-block;
+}
+.titleBar ul li {
+    margin: 0px;
+    padding-right: 12px;
+    padding-left: 10px;
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+    border-left: solid 1px #eeeeee;
+}
+.titleBar ul li label {
+    vertical-align: middle;
+}
+#ecount{
+    display: inline-block;
+    width: 50px;
+}
+#lcount{
+    display: inline-block;
+    width: 50px;
+}
+#fill1{
+    display: inline-block;
+    width: 112px;
+}
+#fill2{
+    display: inline-block;
+    width: 50px;
+}
+#fill3{
+    display: inline-block;
+    width: 170px;
+}
+#fill4{
+    display: inline-block;
+    width: 20px;
+}
+#fill5{
+    display: inline-block;
+    width: 6px;
+}
+#fill6{
+    display: inline-block;
+    width: 380px;
+}
+#fill7{
+    display: inline-block;
+    width: 5px;
+}
+circle.user{
+    stroke: black;
+    stroke-width:1;
+}
+circle.user[select_state=none]{
+    fill: white;
+}
+circle.user[select_state=not_selected]{
+    fill: white;
+}
+circle.user[select_state=selected]{
+    fill: #0bbaf4;
+}
+circle.user[select_state=connected]{
+    fill: #0bbaf4;
+    fill-opacity:.25;
+}
+circle.user[select_state=preview]{
+    fill: #0bbaf4;
+}
+circle.user[select_state=preview_connected]{
+    fill: #0bbaf4;
+    fill-opacity:.25;
+}
+.svgarc{
+    overflow: visible;
+}
+.svgdetail{
+    position: relative;
+    overflow: scroll;
+}
+.legendsvg{
+    position: absolute;
+    width: 325px;
+    height: 30px;
+    top: 0px;
+    left: 375px;
+}
+text.legendtext{
+    text-anchor: middle;
+    font-size: 10pt;
+}
+text.nodelabel[selected=no]{
+    stoke-opacity: 0;
+    fill-opacity:0;
+}
+text.nodelabel{
+    font-size: 10pt;
+}
+text.nodelabel[select_state=none]{
+    stroke-opacity: 0;
+    fill-opacity:0;
+    visibility: hidden;
+}
+text.nodelabel[select_state=preview]{
+    stroke-opacity: 0;
+    fill-opacity:0;
+}
+text.nodelabel[select_state=selected]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[select_state=connected]{
+    stroke-opacity: 0;
+    fill-opacity:0;
+}
+text.nodelabel[select_state=preview_connected]{
+    stroke-opacity: 0;
+    fill-opacity:0;
+}
+text.nodelabel[select_state=preview_h]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[select_state=selected_h]{
+    stoke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[select_state=connected_h]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[select_state=preview_connected_h]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[select_state=not_selected_h]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+text.nodelabel[selected=yes]{
+    stroke-opacity: 1;
+    fill-opacity:1;
+}
+svg text{
+    cursor: pointer;
+}
+
+rect.select{
+    stroke: black;
+    stroke-width: 1;
+    fill: transparent;
+}
+rect.select[checked=no]{
+    stroke-opacity: .25;
+}
+rect.select[checked=yes]{
+    stroke-opacity: 1;
+}
+g[remove=yes] text{
+    stroke: #eeeeee;
+}
+g[remove=yes] rect.delete{
+    stroke-width: 1;
+    fill: transparent;
+    stroke-opacity: .25;
+    stroke: black;
+}
+g[remove=no] rect.delete{
+    stroke-width: 1;
+    fill: transparent;
+    stroke-opacity: .25;
+    stroke: red;
+}
+g[remove=yes] line.delete{
+    stroke-width: 1;
+    fill: transparent;
+    stroke: transparent;
+}
+g[remove=no] line.delete{
+    stroke-width: 1;
+    fill: transparent;
+    stroke-opacity: .25;
+    stroke: red;
+}
+path.select[checked=no]{
+    stroke: transparent;
+    stroke-width: 1;
+    fill: transparent;
+}
+path.select[checked=yes]{
+    stroke: black;
+    stroke-width: 1;
+    fill: transparent;
+}
+line.delete[checked=yes]{
+    stroke-width: 1;
+    fill: transparent;
+    stroke-opacity: .25;
+    stroke: red;
+}
+line.delete[checked=no]{
+    stroke-width: 1;
+    fill: transparent;
+    stroke-opacity: .25;
+    stroke: red;
+}
+line.edge_0{
+    /*    fill: #7fc97f;
+        stroke: #7fc97f;*/
+    fill: green;
+    stroke: green;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_1{
+    /*    fill: #beaed4;
+        stroke: #beaed4;*/
+    fill: blue;
+    stroke: blue;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_2{
+    /*    fill: #fdc086;
+        stroke: #fdc086;*/
+    fill: red;
+    stroke: red;
+    stroke-width: 3;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_3{
+    fill: #6a3d9a;
+    stroke: #6a3d9a;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_4{
+    fill: #386cb0;
+    stroke: #386cb0;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_5{
+    fill: #f0027f;
+    stroke: #f0027f;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_6{
+    fill: #bf5b17;
+    stroke: #bf5b17;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+line.edge_7{
+    fill: #666666;
+    stroke: #666666;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+

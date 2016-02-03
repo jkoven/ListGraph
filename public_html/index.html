@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Email Investigation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" href="imstyles.css" rel="stylesheet">
+        <link type="text/css" href="imfilestyles.css" rel="stylesheet">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        <script src="js/libs/d3/d3.v3.js"></script>
+         <script src="js/libs/d3/d3.layout.cloud.js"></script>
+        <script src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+        <script src="user.js"></script>
+        <script src="graphDisplays.js"></script>
+        <script src="utils.js"></script>
+        <script src="fileutils.js"></script>
+        <script src="displays.js"></script>
+    </head>
+    <body onload="setupDisplays('true', [])">
+        <div id="TopBar" class="titleBar">
+            <h1>ICED: List Graph Tool</h1>
+<!--            <ul>
+                <li>
+                    <button id="One" type="button" onclick="saveEmailsStart()">Save State</button>
+                </li>
+                <li>
+                    <button id="Two" type="button" onclick="buildFileListSelectMenu()">Load Saved State</button>
+                    <label id="fill4"> </label>
+                </li>
+                <li>
+                    <label>User Email Count: </label>
+                    <label id="ecount"> </label>
+                </li>
+                <li>
+                    <label>User Connections: </label>
+                    <label id="lcount"> </label>
+                </li>
+                <li>
+                    <label>Max Users: </label>
+                    <select id="maxusers" onChange="maxSelect(this.value)">
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                    </select>
+                    <label id="fill5"> </label>
+                </li>
+                <li>
+                    <button id="Three" type="button" onclick="setupDisplays('true', [], 'yes')">Select Email Set</button>
+                    <label id="fill4"> </label>
+                </li>
+                <li>
+                    <select id="listtype" onChange="cloudList()">
+                        <option value="list">Subject List</option>
+                        <option value="cloud">Tag Cloud</option>
+                    </select>
+                    <label id="fill5"> </label>
+                </li>
+                                <li>
+                                    <label id="fill4"> </label>
+                                    <button id="Three" type="button" onclick="emailMergeDump('false')">Email Merge</button>
+                                </li>
+            </ul>-->
+        </div>
+        <div id="legendBar" class="titleBar">
+            <ul>
+<!--                <li>
+                    <label>User Email Address</label>
+                    <label id="fill1"> </label>
+                </li>
+                <li>
+                    <label>Counts</label>
+                </li>
+                <li>
+                    <label id="fill6"></label>
+                    <label id="fill7"></label>
+                </li>-->
+                <li>
+                    <label style="display:inline-block; width:850px"></label>
+                </li>
+                <li>
+                    <select id="viewhead" onChange="headSelect(this.value)">
+                        <option value="false">Hide Headers</option>
+                        <option value="true">Show Headers</option>
+                    </select>
+                    <label id="fill5"> </label>
+                </li>
+                <li>
+                    <select id="listtype" onChange="cloudList()">
+                        <option value="list">Subject List</option>
+                        <option value="cloud">Tag Cloud</option>
+                    </select>
+                    <label id="fill5"> </label>
+                </li>
+<!--                <li class="search">
+                    <select id="search1" onChange="searchSelect(this.value)">
+                        <option value="all">Search All</option>
+                        <option value="selected">Search Selected</option>
+                    </select>
+                    <input class="search" id="search2" type="search" placeholder="Search" onsearch="listSubjects(true, this.value, searchRange)">
+                </li>
+                <li>
+                    <button id="One" type="button" onclick="saveSelected()">Save Selection</button>
+                </li>
+            </ul>
+        </div>
+        <div  draggable="true" id="savefiledialog">
+            <ul id="savelist">
+                <li>
+                    <label>Save As: </label>
+                    <input id="saveas" type="text">
+                </li>
+                <li>
+                    <label>Collection Notes:</label>
+                </li>
+                <li>
+
+                    <textarea id="savenotes"></textarea>
+                </li>
+                <li>
+                    <button id="cancelsavefileas" type="button" onclick="saveEmailsCancel()">Cancel</button>
+                    <label id="fill3"></label>
+                    <button id="savefileas" type="button" onclick="saveEmails()">Save Emails</button>
+                </li>
+            </ul>
+        </div>
+        <div  draggable="true" id="loadfiledialog">
+            <ul id="loadlist">
+                <li>
+                    <label>Select Email Set: </label>
+                </li>
+                <li>
+                    <ul id="loadfilelist">      
+                    </ul>
+                </li>
+                <li>
+                    <label id="fill3"></label>
+                </li>
+                <li>
+                    <button id="cancelloadfileas" type="button" onclick="loadEmailsCancel()">Cancel</button>
+                </li>
+            </ul>-->
+        </div>
+        <script>
+            /*            var w = 960, h = 550, r = 150;*/
+            var w = window.innerWidth - 20;
+            var h = window.innerHeight - 90;
+            var r = h / 3.5;
+            var radius = r;
+            var svglist;
+            var svgarc;
+            var svgdetail;
+            var svgcloud;
+            var previewframe;
+            var none_color = "transparent";
+            var selected_color = "red";
+            var connected_color = "green";
+            var preview_color = "blue";
+            var preview_connected_color = "violet";
+            var maxLineWidth = 10;
+            var minLineWidth = 1;
+            var minRad = 2;
+            var maxRad = 7;
+            var minOpc = .1;
+            var maxOpc = 1;
+            var lineHeight = 20;
+            var linkScaleFactor = d3.scale.linear();
+            var edgeScaleFactor = d3.scale.log();
+            var emailScaleFactor = d3.scale.log();
+            var radScaleFactor = d3.scale.log();
+            var lineScaleFactor = d3.scale.log();
+            var milliWeek = 604800000;
+            var selectedCount = 0;
+            var deletedSubjects = new Set();
+            var deletedUsers = new Set();
+            var inTime = false;
+            var searchRange = 'all';
+            var selectedSubjects = new Array();
+            var subjectUsers = new Set();
+            var showHeaders = false;
+            var searchAll = false;
+            var afterSearch = false;
+            var linkSelectedCount = 0;
+            var maxUserCount = 100;
+            var colorList = ["_0", "_1", "_2"];
+            var colorCount = 3;
+//            var colorList = ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781b"];
+            lineScaleFactor.range([minLineWidth, maxLineWidth]);
+//            linkScaleFactor.range([minOpc, maxOpc]);
+//            emailScaleFactor.range([minOpc, maxOpc]);
+            linkScaleFactor.range([1, (4 * lineHeight)]);
+            edgeScaleFactor.range([1, (4 * lineHeight)]);
+            emailScaleFactor.range([1, (4 * lineHeight)]);
+            radScaleFactor.range([minRad, maxRad]);
+            var svgdivlist = d3.select("body").append("div").classed("svglist", true).attr({
+                "id": "listdiv",
+                "style": "width: " + (w / 4  + (3 * (w / 8)))+ "px; height: " + h
+                        + "px;overflow: scroll; position: fixed; left: 10px;top: 75px;"
+//                        + "box-shadow: 1px 1px 1px #eeeeee"
+                        + ";border-style: solid; border-color: #eeeeee; border-width: 1px"
+            });
+//            var svgdivarc = d3.select("body").append("div").classed("svgarc", true).attr({
+//                "id": "arcdiv",
+//                "style": "width: " + (3 * (w / 8)) + "px; height: " + 5 * h / 6
+//                        + "px;position: fixed; left:" + ((w / 4) + 10)
+//                        + "px;top: 75px;"
+////                        + ";border-style: solid; border-color: #eeeeee; border-width: 1px"
+//                        + "box-shadow: 1px 1px 1px #eeeeee; background-color: white"
+//            });
+            var svgdivcloud = d3.select("body").append("div").classed("svgcloud", true).attr({
+                "id": "clouddiv",
+//                "style": "width: " + (3 * (w / 8)) + "px; height: " + (5 * h / 6) / 2
+                "style": "width: " + (3 * (w / 8)) + "px; height: " + h / 2
+                        + "px;overflow: scroll; position: fixed;left: "
+//                        + 2 * r
+                        + ((w / 4) + (3 * (w / 8)) + 10)
+                        + "px;top: 75px;"
+                        + ";border-style: solid; border-color: #eeeeee; border-width: 1px"
+                        + ";background-color: white"
+//                "align": "center"
+            });
+             var svgdivdetail = d3.select("body").append("div").classed("svgdetail", true).attr({
+                "id": "detaildiv",
+//                "style": "width: " + (3 * (w / 8)) + "px; height: " + (5 * h / 6) / 2
+                "style": "width: " + (3 * (w / 8)) + "px; height: " + h / 2
+                        + "px;overflow: scroll; position: fixed;left: "
+//                        + 2 * r
+                        + ((w / 4) + (3 * (w / 8)) + 10)
+                        + "px;top: 75px;"
+                        + ";border-style: solid; border-color: #eeeeee; border-width: 1px"
+                        + ";background-color: white"
+//                "align": "center"
+            });
+            var divpreview = d3.select("body").append("div").classed("preview", true).attr({
+                "id": "previewdiv",
+//                "style": "width: " + (3 * (w / 8)) + "px; height: " + (5 * h / 6) / 2
+                "style": "width: " + (3 * (w / 8)) + "px; height: " + h / 2
+                        + "px;position: fixed; left:" + ((w / 4) + (3 * (w / 8)) + 10)
+//                        + "px;top: " + (75 + (5 * h / 6) / 2) + "px;"
+                        + "px;top: " + (75 + (h) / 2) + "px;"
+                        + ";border-style: solid; border-color: #eeeeee; border-width: 1px"
+                        //                       + "box-shadow: 1px 1px 1px #eeeeee; background-color: white"
+            });
+//            var svgdivtime = d3.select("body").append("div").classed("svgtime", true).attr({
+//                "id": "timediv",
+//                "style": "width: " + (3 * (w / 4)) + "px; height: " + h / 6
+//                        + "px;overflow: scroll; position: fixed; left: " + ((w / 4) + 10) + "px;top: "
+//                        + (75 + (5 * (h / 6))) + "px;"
+//                        + "box-shadow: 1px 1px 1px #eeeeee"
+////                        + ";border-style: solid; border-color: lightgrey; border-width: 1px"
+//            });
+            function setupDisplays(userType, excludeList, newSet, setUpData) {
+                d3.selectAll("svg").remove();
+                deletedSubjects.clear();
+                deletedUsers.clear();
+                selectedCount = 0;
+                svglist = d3.select("div.svglist").append("svg").attr({
+                    "width": svgdivlist.style("width"),
+                    "height": svgdivlist.style("height")
+                });
+//                svgarc = d3.select("div.svgarc").append("svg").classed("svgarc", true).attr({
+//                    "width": svgdivarc.style("width"),
+//                    "height": svgdivarc.style("height")
+//                });
+                svgdetail = d3.select("div.svgdetail").append("svg").classed("svgdetail", true).attr({
+                    "width": svgdivdetail.style("width"),
+                    "height": svgdivdetail.style("height")
+                }).on("mouseEnter", function (event) {
+                    this.focus();
+                }).on("mouseExit", function (event) {
+                    this.blur();
+                });
+                svgcloud = d3.select("div.svgcloud").append("svg").classed("svgcloud", true).attr({
+                    "width": svgdivcloud.style("width"),
+                    "height": svgdivcloud.style("height")
+                }).on("mouseEnter", function (event) {
+                    this.focus();
+                }).on("mouseExit", function (event) {
+                    this.blur();
+                });
+                d3.select("div.preview").selectAll("iframe").remove();
+                previewframe = d3.select("div.preview").append("iframe").classed("previewiframe", true).attr({
+                    "id": "iframe1",
+                    "width": divpreview.style("width"),
+                    "height": divpreview.style("height"),
+                    "style": "border: none"
+                });
+//                svgtime = d3.select("div.svgtime").append("svg").attr({
+//                    "width": (3 * (w / 4) - 10),
+//                    "height": h / 6
+//                });
+                var legendsvg = d3.select("#legendBar").append("svg").classed("legendsvg", true);
+                var rJson = {};
+                rJson["command"] = "topusers";
+                rJson["excludeList"] = excludeList;
+                rJson["reset"] = userType;
+                rJson["maxusers"] = maxUserCount;
+                if (typeof newSet !== 'undefined') {
+                    rJson["newset"] = newSet;
+                } else {
+                    rJson["newset"] = "no";
+                }
+//                d3.json("http://localhost:4444/?" + userType,
+                d3.json("http://localhost:4444/")
+                        .header("Content-Type", "application/json")
+                        .post(JSON.stringify(rJson),
+                                function (err, data) {
+                                    if (err) {
+                                        return console.warn(err);
+                                    }
+                                    var minCount = Number.MAX_VALUE;
+                                    var maxCount = 0.0;
+                                    var minLinkCount = Number.MAX_VALUE;
+                                    var maxLinkCount = 0.0;
+                                    var minEmailCount = Number.MAX_VALUE;
+                                    var maxEmailCount = 0.0;
+                                    data.forEach(function (e, i, a) {
+                                        if (parseInt(e.count) < minEmailCount) {
+                                            minEmailCount = parseInt(e.count);
+                                        }
+                                        if (parseInt(e.count) > maxEmailCount) {
+                                            maxEmailCount = parseInt(e.count);
+                                        }
+                                        if (e.links.length < minLinkCount) {
+                                            minLinkCount = e.links.length;
+                                        }
+                                        if (e.links.length > maxLinkCount) {
+                                            maxLinkCount = e.links.length;
+                                        }
+                                        e.links.forEach(function (dd) {
+                                            if (parseInt(dd.count) < minCount) {
+                                                minCount = parseInt(dd.count);
+                                            }
+                                            if (parseInt(dd.count) > maxCount) {
+                                                maxCount = parseInt(dd.count);
+                                            }
+                                        });
+                                    });
+                                    emailScaleFactor.domain([minEmailCount, maxEmailCount]);
+                                    radScaleFactor.domain([minEmailCount, maxEmailCount]);
+                                    linkScaleFactor.domain([minLinkCount, maxLinkCount]);
+                                    lineScaleFactor.domain([minCount, maxCount]);
+                                    edgeScaleFactor.domain([minCount, maxCount]);
+//                                    legendsvg.append("line").classed("linkbar", true).attr({
+//                                        "x1": 225,
+//                                        "y1": 5,
+//                                        "x2": 225 + linkScaleFactor(maxLinkCount),
+//                                        "y2": 5
+//                                    });
+//                                    legendsvg.append("line").classed("emailbar", true).attr({
+//                                        "x1": 25,
+//                                        "y1": 5,
+//                                        "x2": 25 + emailScaleFactor(maxEmailCount),
+//                                        "y2": 5
+//                                    });
+//                                    legendsvg.append("text").classed("legendtext", true).text(minEmailCount.toString()).attr({
+//                                        "x": 25,
+//                                        "y": 20
+//                                    });
+//                                    legendsvg.append("text").classed("legendtext", true).text(maxEmailCount.toString()).attr({
+//                                        "x": 25 + emailScaleFactor(maxEmailCount),
+//                                        "y": 20
+//                                    });
+//                                    legendsvg.append("text").classed("legendtext", true).text(minLinkCount.toString()).attr({
+//                                        "x": 225,
+//                                        "y": 20
+//                                    });
+//                                    legendsvg.append("text").classed("legendtext", true).text(maxLinkCount.toString()).attr({
+//                                        "x": 225 + linkScaleFactor(maxLinkCount),
+//                                        "y": 20
+//                                    });
+//                    displayUsersCircle(radius, svgarc, data);
+                                    var rJson = {};
+                                    rJson["command"] = "timedata";
+                                    displayUsers(svglist, data);
+                                    toFront(d3.select("#viewhead"), true);
+                                    d3.json("http://localhost:4444/")
+                                            .header("Content-Type", "application/json")
+                                            .post(JSON.stringify(rJson),
+                                                    function (err, timedata) {
+                                                        if (err) {
+                                                            return console.warn(err);
+                                                        }
+//                                                        displayTime(svgtime, timedata);
+                                                        if (typeof setUpData !== 'undefined') {
+                                                            rebuildDisplays(setUpData);
+                                                        }
+                                                    });
+                                });
+            }
+            window.onkeydown = function (event) {
+                if (document.activeElement === document.getElementById("search2")) {
+                    return true;
+                }
+                if (event.keyCode === 32 || event.keyCode === 38 || event.keyCode === 40) {
+                    event.preventDefault();
+                    keyHandler(event.keyCode);
+                    return(false);
+                }
+                return true;
+            };
+        </script>
+    </body>
+</html>
